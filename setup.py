@@ -7,6 +7,8 @@ setup(
     author='Justin',
     author_email='barber.justin(at)gmail.com',
     install_requires=[
+        "BridgePython",
         "tornado >= 2.2",
+        "ConfigIt"
     ]
 )
