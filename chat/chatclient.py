@@ -4,16 +4,46 @@ config = conf_from_file('../development.py')
 from BridgePython import Bridge
 
 bridge = Bridge(api_key=config.public_api_key)
+client = None
+
+def get_text(msg=None):
+    if msg:
+        print(msg)
+    return raw_input('>>> ')
+
 
 class ChatHandler(object):
-    def message(self, sender, message):
-        print (sender + ':' + message)
+    def __init__(self, sender):
+        self.sender = sender
 
-def join_callback(channel, name):
-    print ("Joined channel : " + name)
-    channel.message('steve', 'Bridge is pretty nifty')
+    def join(self, channel_name='bridge-lovers'):
+        auth = bridge.get_service('auth')
+        password = get_text('Enter password:')
+        auth.join(channel_name,
+            self.sender,
+            password,
+            self,
+            join_callback)
 
-auth = bridge.get_service('auth')
-auth.join('bridge-lovers', 'secret123', ChatHandler(), join_callback)
+    def message(self, message):
+        print (self.sender + ': ' + message)
+
+def join_callback(chat_obj, channel_name):
+    print ("Joined channel {0}.".format(channel_name))
+    bridge.emit('converse')
+
+def ready():
+    global client
+    client = ChatHandler(get_text('What is your name?'))
+    client.join(get_text('Enter channel to join:'))
+
+def message():
+    txt = get_text()
+    client.message(txt)
+    bridge.emit('converse')
+
+# events
+bridge.on('ready', ready)
+bridge.on('converse', message)
 
 bridge.connect()
