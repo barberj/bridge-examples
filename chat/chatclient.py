@@ -28,8 +28,10 @@ class ChatHandler(object):
     def message(self, message):
         print (self.sender + ': ' + message)
 
-def join_callback(chat_obj, channel_name):
+def join_callback(channel, channel_name):
+    global client
     print ("Joined channel {0}.".format(channel_name))
+    client.channel = channel
     bridge.emit('converse')
 
 def ready():
@@ -39,7 +41,7 @@ def ready():
 
 def message():
     txt = get_text()
-    client.message(txt)
+    client.channel.message(txt)
     bridge.emit('converse')
 
 # events
