@@ -1,3 +1,7 @@
+"""
+Wrapper provided by googlegroup to handle keywords.
+https://groups.google.com/d/topic/bridge-users/kk3x7cIc-5s/discussion
+"""
 class Wrap():
     def __init__(self, bridge):
         self.bridge = bridge
