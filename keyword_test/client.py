@@ -2,8 +2,9 @@ from configit import conf_from_file
 config = conf_from_file('../development.py')
 
 from BridgePython import Bridge
+from lib import Wrap
 
-bridge = Bridge(api_key=config.public_api_key)
+bridge = Wrap(Bridge(api_key=config.public_api_key))
 client = None
 
 def service_response(resp):
@@ -15,6 +16,9 @@ try:
 except TypeError as e:
     print(e)
 
-service.simple('simple text', service_response)
+try:
+    service.simple('simple text', service_response)
+except TypeError as e:
+    print(e)
 
 bridge.connect()
