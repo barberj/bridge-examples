@@ -19,12 +19,17 @@ class Wrap():
     def __getattr__(self, attr):
         return getattr(self.bridge, attr)
 
+def test_params(*args, **kwargs):
+    print args
+    print kwargs
+
 class RemoteService():
     def __init__(self, svc):
         self.svc = svc
     def __getattr__(self, attr):
         if getattr(self.svc, attr):
-            return lambda **kwargs: getattr(self.svc, attr)(kwargs)
+            return lambda *args, **kwargs: getattr(self.svc, attr)(*(args + (kwargs,)))
+            return lambda *args, **kwargs: test_params(*(args +(kwargs,)))
         raise AttributeError(attr)
 
 class WrappedService():
@@ -32,5 +37,6 @@ class WrappedService():
         self.svc = svc
     def __getattr__(self, attr):
         if getattr(self.svc, attr):
-            return lambda kwargs: getattr(self.svc, attr)(**kwargs)
+            return lambda *args: getattr(self.svc, attr)(*args[:-1], **args[-1])
+            return lambda *args: test_params(*args[:-1], **args[-1])
         raise AttributeError(attr)

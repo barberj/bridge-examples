@@ -12,13 +12,20 @@ def service_response(resp):
 
 service = bridge.get_service('simple')
 try:
-    service.simple(simple='simple text', callback=service_response)
+    print 'trying 1'
+    service.simple(simple='test 1', callback=service_response)
 except TypeError as e:
     print(e)
 
 try:
-    service.simple('simple text', service_response)
+    print 'trying 2'
+    service.simple('test 2', service_response)
 except TypeError as e:
     print(e)
 
+try:
+    print 'trying 3'
+    service.simple('test 3', callback=service_response)
+except TypeError as e:
+    print(e)
 bridge.connect()
