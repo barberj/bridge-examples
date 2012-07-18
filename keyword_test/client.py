@@ -28,4 +28,36 @@ try:
     service.simple('test 3', callback=service_response)
 except TypeError as e:
     print(e)
+
+try:
+    print 'trying 4'
+    service.simple(callback=service_response, simple='test 4')
+except TypeError as e:
+    print(e)
+
+service = bridge.get_service('another')
+try:
+    print 'trying 5'
+    service.simple(simple='test 5', callback=service_response)
+except TypeError as e:
+    print(e)
+
+try:
+    print 'trying 6'
+    service.simple('test 6', service_response)
+except TypeError as e:
+    print(e)
+
+try:
+    print 'trying 7'
+    service.simple('test 7', callback=service_response)
+except TypeError as e:
+    print(e)
+
+try:
+    print 'trying 8'
+    service.simple(callback=service_response, simple='test 8')
+except TypeError as e:
+    print(e)
+
 bridge.connect()

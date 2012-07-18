@@ -11,7 +11,15 @@ class SimpleHandler(object):
         elif callback:
             callback('Simple not passed')
 
+class AnotherSimpleHandler(object):
+    def simple(self, simple, callback):
+        if simple and callback:
+            callback('Another Simple is {0}'.format(simple))
+        elif callback:
+            callback('Another Simple not passed')
+
 bridge = Wrap(Bridge(api_key=config.private_api_key))
 bridge.publish_service('simple', SimpleHandler())
+bridge.publish_service('another', AnotherSimpleHandler())
 
 bridge.connect()
